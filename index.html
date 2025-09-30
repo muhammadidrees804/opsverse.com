@@ -1,410 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Muhammad Idrees — DevOps Engineer</title>
-
-  <!-- Tailwind (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- AOS (Animate On Scroll) -->
-  <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OpsVerse - Portfolio</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
-    /* Page-wide small tweaks */
-    html, body { height: 100%; }
-    body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
+    body{background:#0f172a;color:#fff;overflow-x:hidden;}
 
-    /* Typing effect for name */
-    .typing {
-      display: inline-block;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: .12em solid rgba(255,255,255,0.8);
-      box-sizing: border-box;
-      animation: blink-caret 700ms step-end infinite;
+    /* Navbar */
+    nav{
+      position:fixed;top:0;left:0;width:100%;padding:20px 50px;
+      display:flex;justify-content:space-between;align-items:center;
+      z-index:1000;
+      background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);
     }
-    @keyframes blink-caret {
-      50% { border-color: transparent; }
+    .logo{
+      font-size:26px;font-weight:700;
+      background:linear-gradient(45deg,#00f,#0ff,#0f0);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      text-shadow:0 0 8px rgba(0,255,255,0.6);
+    }
+    .menu-toggle{font-size:24px;cursor:pointer;}
+    .nav-links{
+      position:absolute;top:70px;right:50px;background:#1e293b;
+      border-radius:10px;overflow:hidden;display:none;flex-direction:column;
+    }
+    .nav-links a{
+      color:#fff;padding:12px 20px;text-decoration:none;
+      transition:background 0.3s;
+    }
+    .nav-links a:hover{background:#334155;}
+
+    /* Hero */
+    .hero {
+      position: relative;
+      text-align: center;
+      margin-top: 120px;
+    }
+    .hero img {
+      width: 220px;
+      animation: rise 2s ease-out forwards;
+      filter: drop-shadow(0 0 40px #00f5ff);
+    }
+    .intro h1 {
+      margin: 15px 0 5px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f5ff, #ff79c6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      animation: fade-in 2s ease forwards 1.5s;
+    }
+    .intro h2 {
+      font-size: 1.3rem;
+      color: #ddd;
+      opacity: 0;
+      animation: fade-in 2s ease forwards 2.5s;
+    }
+    @keyframes rise {
+      0% { transform: translateY(100px) scale(0.2); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes fade-in {
+      0% { opacity: 0; transform: translateY(20px);}
+      100% { opacity: 1; transform: translateY(0);}
     }
 
-    /* Small fade/slide variants for hero entrance */
-    .slide-left { transform: translateX(-40px); opacity: 0; transition: all .8s ease; }
-    .slide-up { transform: translateY(30px); opacity: 0; transition: all .8s ease; }
-    .visible { transform: translate(0); opacity: 1; }
-
-    /* Make icons clearer on mobile */
-    .skill-icon { width: 36px; height: 36px; }
-
-    /* subtle bounce for social icons */
-    .bounce { transform-origin: center; transition: transform .28s ease; }
-    .bounce:hover { transform: translateY(-6px) scale(1.04); }
-
-    /* Ensure hero fills nicely on small screens */
-    @media (min-width: 768px) {
-      .hero-title { font-size: 3rem; } /* md */
-      .hero-sub { font-size: 1.125rem; }
+    /* Floating skills layer */
+    .skills-floating {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 750px;
+      height: 500px;
+      transform: translate(-50%, -60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .skills-floating img {
+      position: absolute;
+      width: 50px;
+      opacity: 0;
+      animation: fadeFloatSkill 8s ease-in-out infinite;
+    }
+    @keyframes fadeFloatSkill {
+      0% { opacity: 0; transform: translateX(0); }
+      25% { opacity: 1; transform: translateX(var(--x)); }
+      75% { opacity: 1; transform: translateX(calc(var(--x) * -1)); }
+      100% { opacity: 0; transform: translateX(0); }
     }
 
-    /* make AOS elements invisible before they animate (extra safety) */
-    [data-aos] { opacity: 0; transition-property: opacity, transform; }
+    /* Sections */
+    section{padding:100px 50px;max-width:1200px;margin:auto;}
+    h2{font-size:40px;margin-bottom:40px;text-align:center;color:#0ff;}
+
+    /* Skills */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:30px;}
+    .skill{
+      background:#1e293b;padding:20px;border-radius:15px;text-align:center;
+      transition:transform 0.3s;
+    }
+    .skill:hover{transform:translateY(-8px);}
+    .skill i{font-size:40px;margin-bottom:10px;color:#0ff;}
+
+    /* Projects */
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+    .project{
+      background:#1e293b;padding:25px;border-radius:15px;transition:transform 0.3s;
+    }
+    .project:hover{transform:scale(1.05);}
+    .project h3{margin-bottom:15px;}
+    .project p{font-size:14px;margin-bottom:15px;}
+    .btn-project {
+      display:inline-block;padding:8px 16px;background:#0ff;color:#000;
+      border-radius:8px;text-decoration:none;font-weight:600;
+      transition: all 0.3s ease;
+    }
+    .btn-project:hover{
+      background:#00f;color:#fff;
+      transform: translateY(-5px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Contact */
+    .contact-icons{display:flex;justify-content:center;gap:30px;}
+    .btn-contact{
+      display:inline-block;transition: all 0.3s ease;border-radius:12px;padding:12px 18px;
+    }
+    .btn-contact i{
+      font-size:28px;color:#0ff;
+      transition: transform 0.3s, color 0.3s;
+    }
+    .btn-contact:hover i{
+      color:#00f;transform:scale(1.3);
+    }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-
-  <!-- DOWNLOAD BUTTON (fixed) -->
-  <div class="fixed top-4 right-4 z-50">
-    <button id="downloadBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700">Download Portfolio</button>
-  </div>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">OpsVerse</div>
+    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
 
   <!-- HERO -->
-  <header class="min-h-[60vh] md:min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-600 to-blue-500 text-white p-6">
-    <div class="max-w-4xl w-full text-center">
-      <div class="mb-6">
-        <!-- animated name (typing + slide-in) -->
-        <h1 class="hero-title text-3xl md:text-5xl font-extrabold tracking-tight">
-          <span id="nameContainer" class="typing text-white"></span>
-        </h1>
-      </div>
-
-      <!-- subtitle / intro (fade up) -->
-      <p id="intro" class="hero-sub text-sm md:text-lg text-blue-100/90 mb-6 opacity-0 transform translate-y-4">
-        DevOps Engineer • 1+ Year Experience      </p>
-
-      <!-- action buttons -->
-      <div id="heroButtons" class="flex flex-wrap justify-center gap-3 opacity-0 translate-y-4">
-        <a href="#contact" class="px-5 py-3 bg-white text-blue-600 rounded-lg font-semibold shadow hover:bg-gray-100">Contact Me</a>
-        <a href="https://github.com/muhammadidrees804" target="_blank" class="px-5 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-semibold hover:bg-white/20">GitHub</a>
-      </div>
-
-      <!-- small socials line -->
-      <div class="mt-6 flex justify-center gap-4 text-xl opacity-90">
-        <a class="bounce" href="https://www.linkedin.com/in/muhammad-idrees-3240bb381" target="_blank" title="LinkedIn">🔗</a>
-        <a class="bounce" href="mailto:muhammadidreeskorai@gmail.com" title="Email">✉️</a>
-        <a class="bounce" href="tel:+923004954804" title="Phone">📞</a>
-      </div>
+  <div class="hero">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Devops-toolchain.svg" alt="DevOps Official Logo">
+    <div class="intro">
+      <h1>Muhammad Idrees</h1>
+      <h2>DevOps Engineer — 1+ Year Experience</h2>
     </div>
-  </header>
+    <div class="skills-floating">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" style="--x:-150px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain.svg" style="--x:150px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jenkins/jenkins-original.svg" style="--x:-200px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original.svg" style="--x:200px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" style="--x:-180px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/gitlab/gitlab-original.svg" style="--x:180px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/terraform/terraform-original.svg" style="--x:-220px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/ansible/ansible-original.svg" style="--x:220px;">
+      <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" style="--x:-140px;">
+    </div>
+  </div>
 
-  <!-- ABOUT -->
-  <section id="about" class="py-10 px-6 md:px-10 bg-white">
-    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 items-center">
-      <div data-aos="fade-right" data-aos-duration="800" class="rounded-lg">
-        <h2 class="text-2xl font-bold mb-3">About Me</h2>
-        <p class="text-gray-700 leading-relaxed">
-          I'm <strong>Muhammad Idrees</strong>, a DevOps Engineer with 1+ year of hands-on experience designing and operating production systems.
-          I specialise in building automated CI/CD pipelines, infrastructure-as-code, container orchestration and observability.
-          I enjoy simplifying complex systems, improving reliability, and speeding up developer delivery with robust automation.
-        </p>
-        <ul class="mt-4 text-sm text-gray-600 space-y-1">
-          <li>Location: Pakistan • Available for remote roles</li>
-          <li>Languages: English, Urdu</li>
-        </ul>
+  <!-- About -->
+  <section id="about" data-aos="fade-right">
+    <h2>About Me</h2>
+    <p>
+      I am Muhammad Idrees, a passionate DevOps Engineer skilled in automating workflows,
+      managing cloud infrastructure, and ensuring CI/CD pipelines run seamlessly.
+      My focus is on building scalable, secure, and reliable systems for modern applications.
+    </p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill" data-aos="fade-left"><i class="fab fa-linux"></i><p>Linux</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fab fa-github"></i><p>GitHub</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-terminal"></i><p>Bash</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fab fa-docker"></i><p>Docker</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fab fa-kubernetes"></i><p>Kubernetes</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fas fa-cogs"></i><p>Jenkins</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-code-branch"></i><p>Terraform</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fas fa-network-wired"></i><p>Ansible</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-chart-line"></i><p>Prometheus</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fas fa-chart-pie"></i><p>Grafana</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-sync"></i><p>CI/CD</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fab fa-aws"></i><p>AWS</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-shield-alt"></i><p>Security</p></div>
+      <div class="skill" data-aos="fade-right"><i class="fas fa-file-code"></i><p>Scripting</p></div>
+      <div class="skill" data-aos="fade-left"><i class="fas fa-project-diagram"></i><p>Networking</p></div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project" data-aos="zoom-in">
+        <h3>CI/CD Pipeline</h3>
+        <p>Automated CI/CD pipeline with Jenkins, Docker & Kubernetes for microservices.</p>
+        <a href="https://github.com/muhammadidrees804/ci-cd-pipeline" target="_blank" class="btn-project">View</a>
       </div>
-
-      <!-- quick stats / highlights -->
-      <div data-aos="fade-left" data-aos-duration="800" class="space-y-3">
-        <div class="p-4 bg-gray-50 rounded-lg shadow-sm">
-          <h3 class="font-semibold">Experience</h3>
-          <p class="text-sm text-gray-600">1+ Year building DevOps solutions</p>
-        </div>
-        <div class="p-4 bg-gray-50 rounded-lg shadow-sm">
-          <h3 class="font-semibold">Focus Areas</h3>
-          <p class="text-sm text-gray-600">CI/CD, Cloud Infra, Monitoring, Security Automation</p>
-        </div>
-        <div class="p-4 bg-gray-50 rounded-lg shadow-sm">
-          <h3 class="font-semibold">Contact</h3>
-          <p class="text-sm text-gray-600">+92 3004954804 • muhammadidreeskorai@gmail.com</p>
-        </div>
+      <div class="project" data-aos="zoom-in">
+        <h3>Infrastructure as Code</h3>
+        <p>Provisioned AWS infrastructure using Terraform & Ansible for scalable apps.</p>
+        <a href="https://github.com/muhammadidrees804/infrastructure-as-code" target="_blank" class="btn-project">View</a>
+      </div>
+      <div class="project" data-aos="zoom-in">
+        <h3>Monitoring System</h3>
+        <p>Implemented Prometheus & Grafana dashboards for real-time monitoring.</p>
+        <a href="https://github.com/muhammadidrees804/monitoring-system" target="_blank" class="btn-project">View</a>
       </div>
     </div>
   </section>
 
-  <!-- SKILLS -->
-  <section id="skills" class="py-10 px-6 md:px-10 bg-gray-50">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="text-2xl font-bold mb-6 text-center">Skills</h2>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <!-- Each tile uses AOS with staggered delays -->
-        <div data-aos="zoom-in" data-aos-delay="50" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="skill-icon" alt="Docker"/>
-          <div>
-            <div class="font-semibold">Docker</div>
-            <div class="text-xs text-gray-500">Containers</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="120" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" class="skill-icon" alt="Kubernetes"/>
-          <div>
-            <div class="font-semibold">Kubernetes</div>
-            <div class="text-xs text-gray-500">Orchestration</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="190" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" class="skill-icon" alt="Terraform"/>
-          <div>
-            <div class="font-semibold">Terraform</div>
-            <div class="text-xs text-gray-500">IAC</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="260" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" class="skill-icon" alt="AWS"/>
-          <div>
-            <div class="font-semibold">AWS</div>
-            <div class="text-xs text-gray-500">Cloud</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="330" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" class="skill-icon" alt="Azure"/>
-          <div>
-            <div class="font-semibold">Azure</div>
-            <div class="text-xs text-gray-500">Cloud</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="400" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" class="skill-icon" alt="GCP"/>
-          <div>
-            <div class="font-semibold">GCP</div>
-            <div class="text-xs text-gray-500">Cloud</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="470" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ansible/ansible-original.svg" class="skill-icon" alt="Ansible"/>
-          <div>
-            <div class="font-semibold">Ansible</div>
-            <div class="text-xs text-gray-500">Automation</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="540" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" class="skill-icon" alt="Jenkins"/>
-          <div>
-            <div class="font-semibold">Jenkins</div>
-            <div class="text-xs text-gray-500">CI/CD</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="610" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" class="skill-icon" alt="Linux"/>
-          <div>
-            <div class="font-semibold">Linux</div>
-            <div class="text-xs text-gray-500">Sys Admin</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="680" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="skill-icon" alt="Git"/>
-          <div>
-            <div class="font-semibold">Git</div>
-            <div class="text-xs text-gray-500">VCS</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="750" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/helm/helm-original.svg" class="skill-icon" alt="Helm"/>
-          <div>
-            <div class="font-semibold">Helm</div>
-            <div class="text-xs text-gray-500">K8s Packages</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="820" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prometheus/prometheus-original.svg" class="skill-icon" alt="Prometheus"/>
-          <div>
-            <div class="font-semibold">Prometheus</div>
-            <div class="text-xs text-gray-500">Monitoring</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="890" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/grafana/grafana-original.svg" class="skill-icon" alt="Grafana"/>
-          <div>
-            <div class="font-semibold">Grafana</div>
-            <div class="text-xs text-gray-500">Dashboards</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="960" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="skill-icon" alt="Python"/>
-          <div>
-            <div class="font-semibold">Python</div>
-            <div class="text-xs text-gray-500">Scripting</div>
-          </div>
-        </div>
-
-        <div data-aos="zoom-in" data-aos-delay="1030" class="flex items-center gap-3 p-3 bg-white rounded-lg shadow">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" class="skill-icon" alt="Bash"/>
-          <div>
-            <div class="font-semibold">Bash</div>
-            <div class="text-xs text-gray-500">Scripting</div>
-          </div>
-        </div>
-      </div>
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <div class="contact-icons" data-aos="fade-up">
+      <a href="https://wa.me/923004954804" target="_blank" class="btn-contact"><i class="fab fa-whatsapp"></i></a>
+      <a href="tel:+923004954804" class="btn-contact"><i class="fas fa-phone"></i></a>
+      <a href="mailto:muhammadidreeskorai@gmail.com" class="btn-contact"><i class="fas fa-envelope"></i></a>
+      <a href="https://linkedin.com/in/muhammad-idrees-3240bb381" target="_blank" class="btn-contact"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/muhammadidrees804" target="_blank" class="btn-contact"><i class="fab fa-github"></i></a>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section id="projects" class="py-10 px-6 md:px-10 bg-white">
-    <div class="max-w-5xl mx-auto">
-      <h2 class="text-2xl font-bold mb-6 text-center">Projects</h2>
-
-      <div class="space-y-6">
-        <!-- Project 1 (Left slide) -->
-        <article data-aos="fade-right" data-aos-duration="800" class="p-4 md:p-6 bg-gray-50 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">CI/CD Pipeline</h3>
-          <p class="text-sm text-gray-600 mt-2">Designed an automated CI/CD pipeline for microservices using Jenkins, Docker, and Kubernetes to enable zero-downtime deployments and faster release cycles.</p>
-          <div class="flex flex-wrap gap-2 mt-3 text-sm">
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Docker</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Kubernetes</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Jenkins</span>
-          </div>
-          <div class="mt-3">
-            <a href="https://github.com/muhammadidrees804" target="_blank" class="text-blue-600 hover:underline">View on GitHub</a>
-          </div>
-        </article>
-
-        <!-- Project 2 (Right slide) -->
-        <article data-aos="fade-left" data-aos-duration="800" class="p-4 md:p-6 bg-gray-50 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">Terraform Infrastructure</h3>
-          <p class="text-sm text-gray-600 mt-2">Implemented Infrastructure-as-Code to provision AWS resources (VPC, EKS, RDS) using Terraform modules for repeatable and versioned deployments.</p>
-          <div class="flex flex-wrap gap-2 mt-3 text-sm">
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Terraform</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">AWS</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">EKS</span>
-          </div>
-          <div class="mt-3">
-            <a href="https://github.com/muhammadidrees804" target="_blank" class="text-blue-600 hover:underline">View on GitHub</a>
-          </div>
-        </article>
-
-        <!-- Project 3 (Bottom / pop-in) -->
-        <article data-aos="zoom-in" data-aos-duration="800" class="p-4 md:p-6 bg-gray-50 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">Monitoring & Logging</h3>
-          <p class="text-sm text-gray-600 mt-2">Built centralized observability with Prometheus for metrics and Grafana dashboards, plus fluentd/ELK for aggregated logs to reduce MTTR and improve SLA monitoring.</p>
-          <div class="flex flex-wrap gap-2 mt-3 text-sm">
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Prometheus</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">Grafana</span>
-            <span class="bg-white px-2 py-1 rounded-md text-gray-700 border">ELK</span>
-          </div>
-          <div class="mt-3">
-            <a href="https://github.com/muhammadidrees804" target="_blank" class="text-blue-600 hover:underline">View on GitHub</a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="py-10 px-6 md:px-10 bg-gradient-to-t from-blue-50 to-white">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-2xl font-bold mb-4">Get in touch</h2>
-      <p class="text-gray-600 mb-6">I'm available for freelance & remote roles. Send a message and I'll reply ASAP.</p>
-
-      <form id="contactForm" class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <input name="name" type="text" required placeholder="Your name" class="p-3 rounded border"/>
-        <input name="email" type="email" required placeholder="Your email" class="p-3 rounded border"/>
-        <textarea name="message" rows="4" required placeholder="Message" class="col-span-1 sm:col-span-2 p-3 rounded border"></textarea>
-        <button type="submit" class="col-span-1 sm:col-span-2 px-4 py-3 bg-blue-600 text-white rounded font-semibold">Send Message</button>
-      </form>
-
-      <div class="mt-6 flex justify-center gap-6">
-        <a data-aos="flip-left" data-aos-delay="80" class="bounce" href="https://www.linkedin.com/in/muhammad-idrees-3240bb381" target="_blank" title="LinkedIn">🔗 LinkedIn</a>
-        <a data-aos="flip-left" data-aos-delay="160" class="bounce" href="https://github.com/muhammadidrees804" target="_blank" title="GitHub">🐙 GitHub</a>
-        <a data-aos="flip-left" data-aos-delay="240" class="bounce" href="mailto:muhammadidreeskorai@gmail.com" title="Email">✉️ Email</a>
-        <a data-aos="flip-left" data-aos-delay="320" class="bounce" href="tel:+923004954804" title="Phone">📞 Phone</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="py-6 text-center text-sm text-gray-600">
-    © 2025 Muhammad Idrees — DevOps Engineer
-  </footer>
-
-  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
-    AOS.init({
-      once: true,
-      offset: 120,
-      duration: 700,
-      easing: 'ease-out-cubic'
-    });
-
-    // Typing effect for name (custom controlled for uniqueness)
-    (function typingEffect(){
-      const fullText = "Muhammad Idrees";
-      const container = document.getElementById('nameContainer');
-      let index = 0;
-      // start slightly invisible slide-left -> become visible while typing
-      container.classList.add('slide-left');
-
-      function typeNext() {
-        if (index <= fullText.length) {
-          container.textContent = fullText.slice(0, index);
-          index++;
-          setTimeout(typeNext, 100 + Math.random()*60); // small randomness = unique feel
-        } else {
-          // after typing complete, remove caret border and set visible class
-          container.classList.remove('typing');
-        }
-      }
-      // small delay before starting so header feels dramatic
-      setTimeout(() => {
-        container.classList.add('typing');
-        container.classList.add('visible');
-        container.style.opacity = 1;
-        typeNext();
-        // reveal intro & buttons with small stagger
-        setTimeout(()=> {
-          document.getElementById('intro').classList.add('visible');
-          document.getElementById('intro').style.opacity = 1;
-          document.getElementById('intro').style.transform = 'translateY(0)';
-        }, 900);
-        setTimeout(()=> {
-          document.getElementById('heroButtons').classList.add('visible');
-          document.getElementById('heroButtons').style.opacity = 1;
-          document.getElementById('heroButtons').style.transform = 'translateY(0)';
-        }, 1400);
-      }, 480);
-    })();
-
-    // Download current page as index.html
-    document.getElementById('downloadBtn').addEventListener('click', function () {
-      const doctype = '<!DOCTYPE html>\\n';
-      // Build a copy of the page HTML but adjust script tags to preserve original content
-      const html = document.documentElement.outerHTML;
-      const content = doctype + html;
-      const blob = new Blob([content], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'index.html';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    });
-
-    // Basic client-side contact form handler (no backend)
-    document.getElementById('contactForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      alert('Thanks! Message captured locally — configure a backend or form service to actually receive messages.');
-      this.reset();
-    });
-
-    // small enhancement: when AOS animates elements, ensure they become fully visible (safety)
-    document.addEventListener('aos:in', ({ detail }) => {
-      if(detail && detail.classList) detail.style.opacity = 1;
+    AOS.init({duration:1000, once:true});
+    const toggle=document.querySelector('.menu-toggle');
+    const navLinks=document.querySelector('.nav-links');
+    toggle.addEventListener('click',()=>{ 
+      navLinks.style.display = navLinks.style.display==="flex" ? "none":"flex";
     });
   </script>
 </body>
